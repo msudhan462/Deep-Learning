@@ -1,0 +1,35 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+
+#input c- celcius and f - farenheit
+c = np.array([-40,-10,0,8,15,22,38])
+f = np.array([-40,14,32,46.4,59,71.6,100.4])
+
+#build layer
+l0 = tf.keras.layers.Dense(units=1, input_shape=[1])
+
+#assemble layers into model
+model = tf.keras.Sequential([l0])
+
+# model = tf.keras.Sequential([tf.keras.layers.Dense(units=1, input_shape=[1])]) ---> short way
+
+#compile a model with loss function and optimizer
+model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(0.1))
+
+#train the model
+history = model.fit(c,f,epochs=500,verbose=False)
+print(history.history)
+
+plt.ylabel('Epochs')
+plt.xlabel('Loss Rate')
+
+plt.plot(history.history['loss'])
+
+#predict the value of f
+
+for p in [100,110,120,130,140]:
+  print(model.predict([p]))
+
+# looking at weights
+print(l0.get_weights())
